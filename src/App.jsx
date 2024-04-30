@@ -57,19 +57,25 @@ export default function App() {
 
   return (
     <>
-      <Navbar movies={movies} />
-      <Main movies={movies} />
-      <Footer />
+      <Navbar>
+        <Search />
+        <Numresults movies={movies} />
+      </Navbar>
+      <Main>
+        <ListBox>
+          <MovieList movies={movies} />
+        </ListBox>
+        <WatchedBox />
+      </Main>
     </>
   );
 }
 
-function Navbar({ movies }) {
+function Navbar({ children }) {
   return (
     <nav className=" grid grid-rows-3 grid-flow-col sm:flex items-center justify-center sm:justify-between py-6 bg-stone-400 font-bold text-center">
       <Logo />
-      <Search />
-      <Numresults movies={movies} />
+      {children}
     </nav>
   );
 }
@@ -100,22 +106,21 @@ function Search() {
 
 function Numresults({ movies }) {
   return (
-    <p className="sm:flex gap-2 text-2xl sm:mx-3">
-      Found <strong>{movies.length}</strong> results
+    <p className="sm:flex gap-2 text-1xl sm:mx-3">
+      Found {movies.length} results
     </p>
   );
 }
 
-function Main({ movies }) {
+function Main({ children }) {
   return (
     <main className="sm:flex gap-[2.4rem] sm:justify-center bg-slate-900 h-screen ">
-      <ListBox movies={movies} />
-      <WatchedBox />
+      {children}
     </main>
   );
 }
 
-function ListBox({ movies }) {
+function ListBox({ children }) {
   const [isOpen1, setIsOpen1] = useState(true);
 
   return (
@@ -125,7 +130,7 @@ function ListBox({ movies }) {
         onClick={() => setIsOpen1((open) => !open)}>
         {isOpen1 ? "–" : "+"}
       </button>
-      {isOpen1 && <MovieList movies={movies} />}
+      {isOpen1 && children}
     </div>
   );
 }
@@ -190,19 +195,19 @@ function WatchedSummary({ watched }) {
       <h2>Movies you watched</h2>
       <div className="flex gap-4 ">
         <p>
-          <span>#️⃣</span>
+          <span>🎥 </span>
           <span>{watched.length} movies</span>
         </p>
         <p>
-          <span>⭐️</span>
+          <span>⭐️ </span>
           <span>{avgImdbRating}</span>
         </p>
         <p>
-          <span>🌟</span>
+          <span>✨ </span>
           <span>{avgUserRating}</span>
         </p>
         <p>
-          <span>⏳</span>
+          <span>⌚️ </span>
           <span>{avgRuntime} min</span>
         </p>
       </div>
@@ -235,18 +240,14 @@ function WatchedMovie({ movie }) {
           <span>{movie.imdbRating}</span>
         </p>
         <p className="flex items-center gap-[0.8rem]">
-          <span>🌟</span>
+          <span>✨</span>
           <span>{movie.userRating}</span>
         </p>
         <p className="flex items-center gap-[0.8rem]">
-          <span>⏳</span>
+          <span>⌚️</span>
           <span>{movie.runtime} min</span>
         </p>
       </div>
     </li>
   );
-}
-
-function Footer() {
-  return <footer className="bg-stone-400 h-28"></footer>;
 }
