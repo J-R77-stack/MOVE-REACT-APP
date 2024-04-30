@@ -54,6 +54,7 @@ const average = (arr) =>
 
 export default function App() {
   const [movies] = useState(tempMovieData);
+  const [watched] = useState(tempWatchedData);
 
   return (
     <>
@@ -62,10 +63,13 @@ export default function App() {
         <Numresults movies={movies} />
       </Navbar>
       <Main>
-        <ListBox>
+        <Box>
           <MovieList movies={movies} />
-        </ListBox>
-        <WatchedBox />
+        </Box>
+        <Box>
+          <WatchedSummary watched={watched} />
+          <WatchedMovieList watched={watched} />
+        </Box>
       </Main>
     </>
   );
@@ -120,20 +124,41 @@ function Main({ children }) {
   );
 }
 
-function ListBox({ children }) {
-  const [isOpen1, setIsOpen1] = useState(true);
+function Box({ children }) {
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <div className=" bg-slate-800 sm:w-[42rem] sm:max-w-[42rem] rounded-xl sm:mt-10 relative ">
       <button
         className=" absolute top-[0.8rem] right-[0.8rem] h-[2.4rem] z-[999] aspect-[1] rounded-full bg-stone-300 font-bold cursor-pointer"
-        onClick={() => setIsOpen1((open) => !open)}>
-        {isOpen1 ? "–" : "+"}
+        onClick={() => setIsOpen((open) => !open)}>
+        {isOpen ? "–" : "+"}
       </button>
-      {isOpen1 && children}
+      {isOpen && children}
     </div>
   );
 }
+
+// function WatchedBox() {
+//   const [watched] = useState(tempWatchedData);
+//   const [isOpen2, setIsOpen2] = useState(true);
+
+//   return (
+//     <div className="rounded-xl bg-slate-800 sm:w-[42rem] sm:max-w-[42rem] sm:mt-10 relative ">
+//       <button
+//         className="absolute top-[0.8rem] right-[0.8rem] h-[2.4rem] z-[999] aspect-[1] rounded-full bg-stone-300 font-bold cursor-pointer"
+//         onClick={() => setIsOpen2((open) => !open)}>
+//         {isOpen2 ? "–" : "+"}
+//       </button>
+//       {isOpen2 && (
+//         <>
+//           <WatchedSummary watched={watched} />
+//           <WatchedMovieList watched={watched} />
+//         </>
+//       )}
+//     </div>
+//   );
+// }
 
 function MovieList({ movies }) {
   return (
@@ -161,27 +186,6 @@ function Movie({ movie }) {
         </p>
       </div>
     </li>
-  );
-}
-
-function WatchedBox() {
-  const [watched] = useState(tempWatchedData);
-  const [isOpen2, setIsOpen2] = useState(true);
-
-  return (
-    <div className="rounded-xl bg-slate-800 sm:w-[42rem] sm:max-w-[42rem] sm:mt-10 relative ">
-      <button
-        className="absolute top-[0.8rem] right-[0.8rem] h-[2.4rem] z-[999] aspect-[1] rounded-full bg-stone-300 font-bold cursor-pointer"
-        onClick={() => setIsOpen2((open) => !open)}>
-        {isOpen2 ? "–" : "+"}
-      </button>
-      {isOpen2 && (
-        <>
-          <WatchedSummary watched={watched} />
-          <WatchedMovieList watched={watched} />
-        </>
-      )}
-    </div>
   );
 }
 
